@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap");
+
 .App {
   display: grid;
   grid-template-rows: 0.5fr 3fr;
@@ -9,8 +11,13 @@
 }
 
 .Header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   background-color: yellow;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 3rem;
 }
 
 .Canvas {
@@ -18,7 +25,99 @@
   display: flex;
 }
 
-.Details {
-  background-color: orange;
+.Details_Container {
+  display: grid;
+  grid-template-rows: 2fr 1fr;
+  background-color: #dbdabc;
+}
+
+.Details_Keys_Container {
   display: flex;
+  background-color: #dbdabc;
+  height: 100%;
+}
+
+.Details_Keys {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  background-color: #dbdabc;
+
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  height: 50%;
+}
+
+.Details_Keys_Up {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.Details_Keys_Side {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.Details_Keys_Side_Left {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
+}
+
+.Details_Keys_Side_Right {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
+}
+
+.Details_Keys_Down {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+}
+
+.Up_Arrow {
+}
+
+.Button {
+}
+
+.ButtonArrowUp:focus {
+  animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.ButtonArrowLeft:focus {
+  animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.ButtonArrowRight:focus {
+  animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.ButtonArrowDown:focus {
+  animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.FadeIn {
+  animation: fade-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.Details_Links {
+  display: flex;
+  background-color: pink;
+  height: 100%;
 }
