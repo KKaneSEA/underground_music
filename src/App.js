@@ -1,25 +1,31 @@
 import { useState } from "react";
-
+import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { CameraShake } from "@react-three/drei";
 
 import "./App.css";
 
-function HeaderText() {
+function HeaderText(props) {
   return (
-    <mesh>
+    <mesh position={props.positionBox}>
       <boxBufferGeometry attach="geometry" />
 
-      <meshLambertMaterial attach="material" color="blue" />
+      {/* <meshLambertMaterial attach="material" color="blue" /> */}
+      <meshPhongMaterial attach="material" color="green" />
     </mesh>
   );
 }
 
 function App() {
   const [upArrowCSS, setUpArrowCSS] = useState("ButtonArrowUp");
+  const [rotateAxis, setRotateAxis] = useState(1);
+  const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
+
   function handleButton(evt) {
     console.log("handled");
+    setRotateAxis(rotateAxis + 1);
+    setPositionBox([1, rotateAxis, 1]);
   }
 
   function handleKey(e) {
@@ -34,6 +40,8 @@ function App() {
       // handleButton(e);
       console.log("enter submitted");
     console.log(`Button${x}`);
+    setRotateAxis(rotateAxis + 1);
+    setPositionBox([1, rotateAxis, 1]);
     // setUpArrowCSS(`Button${x}:focus`);
     // console.log(upArrowCSS);
   }
@@ -54,10 +62,11 @@ function App() {
             className="Three_Canvas"
             camera={{ fov: 30, position: [0, 20, 35] }}
           >
+            <directionalLight position={[1, 1, 1]} />
             <OrbitControls />
             <ambientLight intensity={1.5} color={"white"} />
             <spotLight position={[60, 900, -9]} color={"white"} angle={90.9} />
-            <HeaderText />
+            <HeaderText positionBox={positionBox} />
           </Canvas>
         </div>
         <div className="Details_Container">
