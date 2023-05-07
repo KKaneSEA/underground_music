@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as THREE from "three";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { CameraShake } from "@react-three/drei";
-
 import "./App.css";
+
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+function Model() {
+  const { scene } = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
+  return <primitive object={scene} position={[1, 1, 33.9]} />;
+}
 
 function HeaderText(props) {
   return (
@@ -21,10 +27,31 @@ function App() {
   const [upArrowCSS, setUpArrowCSS] = useState("ButtonArrowUp");
   const [rotateAxis, setRotateAxis] = useState(1);
   const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
+  // const [keepPositionBox, setKeepPositionBox] = useState();
+  const gltf = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
+
+  useEffect(() => {
+    function changepPositionBox(rotateAxis) {
+      setPositionBox([1, rotateAxis, 1]);
+    }
+    changepPositionBox(rotateAxis);
+  }, [rotateAxis]);
 
   function handleButton(evt) {
     console.log("handled");
     setRotateAxis(rotateAxis + 1);
+    setPositionBox([1, rotateAxis, 1]);
+  }
+
+  function handleButtonUp(evt) {
+    console.log("handled up");
+    setRotateAxis(rotateAxis + 1);
+    setPositionBox([1, rotateAxis, 1]);
+  }
+
+  function handleButtonDown(evt) {
+    console.log("handled down");
+    setRotateAxis(rotateAxis - 1);
     setPositionBox([1, rotateAxis, 1]);
   }
 
@@ -60,13 +87,15 @@ function App() {
           {" "}
           <Canvas
             className="Three_Canvas"
-            camera={{ fov: 30, position: [0, 20, 35] }}
+            camera={{ fov: 30, position: [1.2, 1.2, 35] }}
           >
             <directionalLight position={[1, 1, 1]} />
             <OrbitControls />
             <ambientLight intensity={1.5} color={"white"} />
             <spotLight position={[60, 900, -9]} color={"white"} angle={90.9} />
-            <HeaderText positionBox={positionBox} />
+            {/* <HeaderText positionBox={positionBox} /> */}
+
+            <Model />
           </Canvas>
         </div>
         <div className="Details_Container">
@@ -120,7 +149,7 @@ function App() {
                 <button
                   className="ButtonArrowDown"
                   onClick={(e) => {
-                    handleButton();
+                    handleButtonDown();
                   }}
                 >
                   <img
