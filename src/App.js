@@ -4,8 +4,9 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { CameraShake } from "@react-three/drei";
 import "./App.css";
-
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import useSound from "use-sound";
+import sound1 from "./sounds/sound1.mp3";
 
 function Model() {
   const { scene } = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
@@ -29,6 +30,7 @@ function App() {
   const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
   // const [keepPositionBox, setKeepPositionBox] = useState();
   const gltf = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
+  const [play] = useSound(sound1);
 
   useEffect(() => {
     function changepPositionBox(rotateAxis) {
@@ -39,6 +41,7 @@ function App() {
 
   function handleButton(evt) {
     console.log("handled");
+    play();
     setRotateAxis(rotateAxis + 1);
     setPositionBox([1, rotateAxis, 1]);
   }
