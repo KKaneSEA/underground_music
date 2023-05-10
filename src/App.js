@@ -60,7 +60,7 @@ function App() {
 
   function handleButton(evt) {
     console.log("handled");
-    // play();
+    play();
     setRotateAxis(rotateAxis + 1);
     setPositionBox([1, rotateAxis, 1]);
   }
@@ -111,11 +111,16 @@ function App() {
             className="Three_Canvas"
             camera={{ fov: 125, position: [15.5, 7, 37] }}
           >
-            {/* <directionalLight position={[1, 1, 1]} /> */}
+            <directionalLight
+              position={[1, 1, 1]}
+              color={"grey"}
+              angle={90.9}
+            />
             <OrbitControls />
             <Env />
-            {/* <ambientLight intensity={1.5} color={"white"} />
-            <spotLight position={[20, 900, -9]} color={"white"} angle={90.9} /> */}
+            {/* <ambientLight intensity={1.5} color={"white"} /> */}
+            {/* <spotLight position={[20, 900, -9]} color={"grey"} angle={90.9} /> */}
+
             {/* <HeaderText positionBox={positionBox} /> */}
 
             <Model positionBox={positionBox} />
