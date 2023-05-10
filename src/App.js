@@ -1,16 +1,30 @@
 import { useState, useEffect } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF, Environment } from "@react-three/drei";
 import { CameraShake } from "@react-three/drei";
-import "./App.css";
+import "./styles/App.scss";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import useSound from "use-sound";
 import sound1 from "./sounds/sound1.mp3";
 
-function Model() {
+let emptyScene = [];
+
+function Model(positionBox) {
   const { scene } = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
-  return <primitive object={scene} position={[1, 1, 33.9]} />;
+  console.log(scene);
+  console.log(scene.children[2]);
+  emptyScene = scene.children[2];
+  // emptyScene.rotation.y = 45;
+  console.log(emptyScene);
+  return (
+    <primitive
+      object={scene}
+      position={[-29.5, 7.5, 45.9]}
+
+      // rotation={props.positionBox}
+    />
+  );
 }
 
 function HeaderText(props) {
@@ -24,10 +38,15 @@ function HeaderText(props) {
   );
 }
 
+function Env() {
+  return <Environment files="./images/OmKHPark_EnvM.hdr" />;
+}
+
 function App() {
   const [upArrowCSS, setUpArrowCSS] = useState("ButtonArrowUp");
-  const [rotateAxis, setRotateAxis] = useState(1);
-  const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
+  const [rotateAxis, setRotateAxis] = useState(45);
+  // const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
+  const [positionBox, setPositionBox] = useState(rotateAxis);
   // const [keepPositionBox, setKeepPositionBox] = useState();
   const gltf = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
   const [play] = useSound(sound1);
@@ -41,7 +60,7 @@ function App() {
 
   function handleButton(evt) {
     console.log("handled");
-    play();
+    // play();
     setRotateAxis(rotateAxis + 1);
     setPositionBox([1, rotateAxis, 1]);
   }
@@ -90,15 +109,16 @@ function App() {
           {" "}
           <Canvas
             className="Three_Canvas"
-            camera={{ fov: 30, position: [1.2, 1.2, 35] }}
+            camera={{ fov: 125, position: [15.5, 7, 37] }}
           >
-            <directionalLight position={[1, 1, 1]} />
+            {/* <directionalLight position={[1, 1, 1]} /> */}
             <OrbitControls />
-            <ambientLight intensity={1.5} color={"white"} />
-            <spotLight position={[60, 900, -9]} color={"white"} angle={90.9} />
+            <Env />
+            {/* <ambientLight intensity={1.5} color={"white"} />
+            <spotLight position={[20, 900, -9]} color={"white"} angle={90.9} /> */}
             {/* <HeaderText positionBox={positionBox} /> */}
 
-            <Model />
+            <Model positionBox={positionBox} />
           </Canvas>
         </div>
         <div className="Details_Container">
