@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Environment } from "@react-three/drei";
-import { CameraShake } from "@react-three/drei";
+import { OrbitControls, Environment } from "@react-three/drei";
+import { useGLTF, CameraShake } from "@react-three/drei";
 import "./styles/App.scss";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import useSound from "use-sound";
@@ -10,39 +10,48 @@ import sound1 from "./sounds/sound1.mp3";
 
 let emptyScene = [];
 
-function Model(positionBox) {
-  const { scene } = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
-  console.log(scene);
-  console.log(scene.children[2]);
-  emptyScene = scene.children[2];
-  // emptyScene.rotation.y = 45;
-  console.log(emptyScene);
-  return (
-    <primitive
-      object={scene}
-      position={[-29.5, 7.5, 45.9]}
+// function Model(positionBox) {
+//   const { scene } = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
+//   console.log(scene);
+//   console.log(scene.children[2]);
+//   emptyScene = scene.children[2];
+//   // emptyScene.rotation.y = 45;
+//   console.log(emptyScene);
+//   return (
+//     <primitive
+//       object={scene}
+//       position={[-29.5, 7.5, 45.9]}
 
-      // rotation={props.positionBox}
-    />
-  );
-}
+//       // rotation={props.positionBox}
+//     />
+//   );
+// }
 
-function HeaderText(props) {
-  return (
-    <mesh position={props.positionBox}>
-      <boxBufferGeometry attach="geometry" />
+// function HeaderText(props) {
+//   return (
+//     <mesh position={props.positionBox}>
+//       <boxBufferGeometry attach="geometry" />
 
-      {/* <meshLambertMaterial attach="material" color="blue" /> */}
-      <meshPhongMaterial attach="material" color="green" />
-    </mesh>
-  );
-}
+//       {/* <meshLambertMaterial attach="material" color="blue" /> */}
+//       <meshPhongMaterial attach="material" color="green" />
+//     </mesh>
+//   );
+// }
 
 function Env() {
   return <Environment files="./images/OmKHPark_EnvM.hdr" />;
 }
 
 function App() {
+  const [rotateY, setRotateY] = useState(0);
+  const modelUnderground = useGLTF("./models/undergroundmusic.glb");
+
+  console.log(modelUnderground.scene);
+
+  let sceneRotate = modelUnderground.scene.children[2];
+  console.log(sceneRotate.rotation.x);
+  sceneRotate.rotation.y = rotateY;
+
   const [upArrowCSS, setUpArrowCSS] = useState("ButtonArrowUp");
   const [rotateAxis, setRotateAxis] = useState(45);
   // const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
@@ -61,20 +70,22 @@ function App() {
   function handleButton(evt) {
     console.log("handled");
     play();
-    setRotateAxis(rotateAxis + 1);
-    setPositionBox([1, rotateAxis, 1]);
+    // setRotateAxis(rotateAxis + 1);
+    // setPositionBox([1, rotateAxis, 1]);
   }
 
   function handleButtonUp(evt) {
     console.log("handled up");
-    setRotateAxis(rotateAxis + 1);
-    setPositionBox([1, rotateAxis, 1]);
+    // setRotateAxis(rotateAxis + 1);
+    // setPositionBox([1, rotateAxis, 1]);
+    setRotateY(rotateY + 0.1);
   }
 
   function handleButtonDown(evt) {
     console.log("handled down");
-    setRotateAxis(rotateAxis - 1);
-    setPositionBox([1, rotateAxis, 1]);
+    // setRotateAxis(rotateAxis - 1);
+    // setPositionBox([1, rotateAxis, 1]);
+    setRotateY(rotateY - 0.2);
   }
 
   function handleKey(e) {
@@ -113,17 +124,21 @@ function App() {
           >
             <directionalLight
               position={[1, 1, 1]}
-              color={"grey"}
-              angle={90.9}
+              color={"white"}
+              angle={-10.9}
             />
-            <OrbitControls />
+            {/* <OrbitControls /> */}
             <Env />
-            {/* <ambientLight intensity={1.5} color={"white"} /> */}
+
             {/* <spotLight position={[20, 900, -9]} color={"grey"} angle={90.9} /> */}
 
             {/* <HeaderText positionBox={positionBox} /> */}
 
-            <Model positionBox={positionBox} />
+            {/* <Model positionBox={positionBox} /> */}
+            <primitive
+              object={modelUnderground.scene}
+              position={[-29.5, 7.5, 36.9]}
+            />
           </Canvas>
         </div>
         <div className="Details_Container">
@@ -133,7 +148,7 @@ function App() {
                 <button
                   className="ButtonArrowUp"
                   onClick={(e) => {
-                    handleButton();
+                    handleButtonUp();
                   }}
                 >
                   <img
@@ -189,7 +204,7 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="Details_Links">export link</div>
+          <div className="Details_Links">test</div>
         </div>
       </div>
       <footer>footer</footer>
