@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useRef, Suspense, useState, useEffect } from "react";
+import Loading from "./Loading.js";
+import Person from "./Person.js";
 import * as THREE from "three";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { OrbitControls, Environment } from "@react-three/drei";
+import { useAnimations, OrbitControls, Environment } from "@react-three/drei";
 import { useGLTF, CameraShake } from "@react-three/drei";
 import "./styles/App.scss";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { Debug, RigidBody, Physics } from "@react-three/rapier";
 import useSound from "use-sound";
 import sound1 from "./sounds/sound1.mp3";
 
@@ -44,48 +46,83 @@ function Env() {
 
 function App() {
   const [rotateY, setRotateY] = useState(0);
-  const modelUnderground = useGLTF("./models/undergroundmusic.glb");
+  const modelUnderground = useGLTF("./models/otherUndergroundMusic.glb");
+  const bricksUnderground = useGLTF("./models/bricksUndergroundMusic.glb");
 
-  console.log(modelUnderground.scene);
+  const brickRef = useRef();
+  const personRef = useRef();
+
+  // const personUnderground = useGLTF("./models/personUndergroundMusic.glb");
+
+  // const animationPerson = useAnimations(
+  //   personUnderground.animations,
+  //   personUnderground.scene
+  // );
+
+  // console.log(personUnderground);
+  // console.log("here");
 
   let sceneRotate = modelUnderground.scene.children[2];
-  console.log(sceneRotate.rotation.x);
+  let bricksRotateY = bricksUnderground.scene.children[2];
+
   sceneRotate.rotation.y = rotateY;
+  bricksRotateY.rotation.y = rotateY;
+  brickRef.rotation = { x: 0, y: 0, z: 0 };
+  console.log(brickRef);
 
   const [upArrowCSS, setUpArrowCSS] = useState("ButtonArrowUp");
-  const [rotateAxis, setRotateAxis] = useState(45);
+  // const [rotateAxis, setRotateAxis] = useState(45);
   // const [positionBox, setPositionBox] = useState([1, rotateAxis, 1]);
-  const [positionBox, setPositionBox] = useState(rotateAxis);
+  // const [positionBox, setPositionBox] = useState(rotateAxis);
   // const [keepPositionBox, setKeepPositionBox] = useState();
-  const gltf = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
+  // const gltf = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
   const [play] = useSound(sound1);
 
-  useEffect(() => {
-    function changepPositionBox(rotateAxis) {
-      setPositionBox([1, rotateAxis, 1]);
-    }
-    changepPositionBox(rotateAxis);
-  }, [rotateAxis]);
+  // useEffect(() => {
+  //   function changepPositionBox(rotateAxis) {
+  //     setPositionBox([1, rotateAxis, 1]);
+  //   }
+  //   changepPositionBox(rotateAxis);
+  // }, [rotateAxis]);
 
   function handleButton(evt) {
     console.log("handled");
     play();
+
+    // personRef.current.applyTorqueImpulse({
+    //   x: Math.random() - 0.5,
+    //   y: 1,
+    //   z: 0,
+    // });
+
     // setRotateAxis(rotateAxis + 1);
     // setPositionBox([1, rotateAxis, 1]);
   }
+
+  // const personJump = () => {
+  //   // const mass = personRef.current.mass();
+  //   // console.log(mass);
+  //   // console.log(cube.current);
+  //   personRef.current.applyImpulse({ x: -2, y: 5, z: 0 });
+  //   personRef.current.applyTorqueImpulse({
+  //     x: Math.random() - 0.5,
+  //     y: 1,
+  //     z: 0,
+  //   });
+  // };
 
   function handleButtonUp(evt) {
     console.log("handled up");
     // setRotateAxis(rotateAxis + 1);
     // setPositionBox([1, rotateAxis, 1]);
-    setRotateY(rotateY + 0.1);
+    setRotateY(rotateY - 0.02);
   }
 
   function handleButtonDown(evt) {
     console.log("handled down");
     // setRotateAxis(rotateAxis - 1);
     // setPositionBox([1, rotateAxis, 1]);
-    setRotateY(rotateY - 0.2);
+    setRotateY(rotateY + 0.02);
   }
 
   function handleKey(e) {
@@ -100,8 +137,8 @@ function App() {
       // handleButton(e);
       console.log("enter submitted");
     console.log(`Button${x}`);
-    setRotateAxis(rotateAxis + 1);
-    setPositionBox([1, rotateAxis, 1]);
+    // setRotateAxis(rotateAxis + 1);
+    // setPositionBox([1, rotateAxis, 1]);
     // setUpArrowCSS(`Button${x}:focus`);
     // console.log(upArrowCSS);
   }
@@ -120,7 +157,7 @@ function App() {
           {" "}
           <Canvas
             className="Three_Canvas"
-            camera={{ fov: 125, position: [15.5, 7, 37] }}
+            camera={{ fov: 85, position: [15.5, 12, 37] }}
           >
             <directionalLight
               position={[1, 1, 1]}
@@ -135,10 +172,28 @@ function App() {
             {/* <HeaderText positionBox={positionBox} /> */}
 
             {/* <Model positionBox={positionBox} /> */}
-            <primitive
-              object={modelUnderground.scene}
-              position={[-29.5, 7.5, 36.9]}
-            />
+
+            <Suspense fallback={<Loading position-y={1.0} scale={[5, 5, 5]} />}>
+              <Physics>
+                <Debug />
+
+                <RigidBody>
+                  <primitive
+                    object={modelUnderground.scene}
+                    position={[-29.5, 7.5, 35.9]}
+                  />
+                </RigidBody>
+
+                <RigidBody type="kinematicPosition" ref={brickRef}>
+                  <primitive
+                    object={bricksUnderground.scene}
+                    position={[-29.5, 7.5, 36.9]}
+                  />
+                </RigidBody>
+
+                <Person />
+              </Physics>
+            </Suspense>
           </Canvas>
         </div>
         <div className="Details_Container">
