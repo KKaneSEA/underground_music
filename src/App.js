@@ -6,7 +6,7 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useAnimations, OrbitControls, Environment } from "@react-three/drei";
 import { useGLTF, CameraShake } from "@react-three/drei";
 import "./styles/App.scss";
-import { Debug, RigidBody, Physics } from "@react-three/rapier";
+import { Debug, RigidBody, Physics, CuboidCollider } from "@react-three/rapier";
 import useSound from "use-sound";
 import sound1 from "./sounds/sound1.mp3";
 
@@ -78,38 +78,13 @@ function App() {
   // const gltf = useLoader(GLTFLoader, "./models/undergroundmusic.glb");
   const [play] = useSound(sound1);
 
-  // useEffect(() => {
-  //   function changepPositionBox(rotateAxis) {
-  //     setPositionBox([1, rotateAxis, 1]);
-  //   }
-  //   changepPositionBox(rotateAxis);
-  // }, [rotateAxis]);
-
-  function handleButton(evt) {
+  function handleButton(object) {
     console.log("handled");
     play();
-
-    // personRef.current.applyTorqueImpulse({
-    //   x: Math.random() - 0.5,
-    //   y: 1,
-    //   z: 0,
-    // });
 
     // setRotateAxis(rotateAxis + 1);
     // setPositionBox([1, rotateAxis, 1]);
   }
-
-  // const personJump = () => {
-  //   // const mass = personRef.current.mass();
-  //   // console.log(mass);
-  //   // console.log(cube.current);
-  //   personRef.current.applyImpulse({ x: -2, y: 5, z: 0 });
-  //   personRef.current.applyTorqueImpulse({
-  //     x: Math.random() - 0.5,
-  //     y: 1,
-  //     z: 0,
-  //   });
-  // };
 
   function handleButtonUp(evt) {
     console.log("handled up");
@@ -191,7 +166,7 @@ function App() {
                   />
                 </RigidBody>
 
-                <Person />
+                <Person handleButton={handleButton} />
               </Physics>
             </Suspense>
           </Canvas>
@@ -259,10 +234,10 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="Details_Links">test</div>
+          <div className="Details_Links">click an arrow to play</div>
         </div>
       </div>
-      <footer>footer</footer>
+      <footer className="Footer"></footer>
     </div>
   );
 }

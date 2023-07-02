@@ -6,19 +6,12 @@ $bp-medium: 42.1em; //675px
 $bp-small: 35.93em; //575px
 $bp-smallest: 29.5em; //472px
 
-$warmblack: #525252;
 $starkyellow: yellow;
-$lighterblack: #252422;
-$soft: #fbc770;
+
+$softyellow: #f5e751;
 $warmwhite: #f7f7f2;
-$blue1: #036474;
-$greytext: #f0f0f0;
-$greybackground: #cdcfba;
 
-$warmgreen: #d3e37b;
-
-$greenbackground: #dbf09c;
-$greenshadow: #abbf72;
+$darkbackground: #161216;
 
 html {
   font-size: 62.5%; /* 1 rem = 10px, 10px/16px (browser default) = 62.5% */
@@ -26,7 +19,7 @@ html {
 
 .App {
   display: grid;
-  grid-template-rows: 0.5fr 3fr;
+  grid-template-rows: 0.8fr 3.5fr;
   height: 100vh;
 
   @media only screen and (max-width: $bp-extraLarge) {
@@ -79,7 +72,7 @@ html {
 .Details_Container {
   display: grid;
   grid-template-rows: 2fr 1fr;
-  background-color: $greybackground;
+  background-color: $darkbackground;
 
   @media only screen and (max-width: $bp-extraLarge) {
     height: 100%;
@@ -89,14 +82,14 @@ html {
 
 .Details_Keys_Container {
   display: flex;
-  background-color: $greybackground;
+  background-color: $darkbackground;
   height: 80%;
 }
 
 .Details_Keys {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
-  background-color: $greybackground;
+  background-color: $darkbackground;
 
   align-items: center;
   align-self: center;
@@ -137,10 +130,20 @@ html {
   align-self: center;
 }
 
-.Up_Arrow {
+.ButtonArrowUp {
+  border-radius: 20px;
 }
 
-.Button {
+.ButtonArrowDown {
+  border-radius: 20px;
+}
+
+.ButtonArrowLeft {
+  border-radius: 20px;
+}
+
+.ButtonArrowRight {
+  border-radius: 20px;
 }
 
 .ButtonArrowUp:focus {
@@ -174,12 +177,17 @@ html {
 
 .Details_Links {
   display: flex;
-  background-color: $greybackground;
+  background-color: $darkbackground;
   height: 100%;
-  color: $warmblack;
+  color: $softyellow;
   justify-content: center;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 2.5rem;
   @media only screen and (max-width: $bp-extraLarge) {
     width: 100%;
-    // justify-content: center;
   }
+}
+
+.Footer {
+  background-color: $warmwhite;
 }
