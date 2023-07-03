@@ -76,7 +76,7 @@ html {
 
   @media only screen and (max-width: $bp-extraLarge) {
     height: 100%;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 0.5fr 1fr;
   }
 }
 
@@ -84,6 +84,10 @@ html {
   display: flex;
   background-color: $darkbackground;
   height: 80%;
+
+  @media only screen and (max-width: $bp-extraLarge) {
+    padding-bottom: 0;
+  }
 }
 
 .Details_Keys {
@@ -177,10 +181,13 @@ html {
 
 .Details_Links {
   display: flex;
+  flex-direction: column;
   background-color: $darkbackground;
   height: 100%;
   color: $softyellow;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+
   font-family: "Fjalla One", sans-serif;
   font-size: 2.5rem;
   @media only screen and (max-width: $bp-extraLarge) {
@@ -188,6 +195,81 @@ html {
   }
 }
 
+.Sound {
+  display: flex;
+  flex-direction: row;
+  color: $softyellow;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.Sound_Text {
+  padding-right: 1rem;
+  font-family: "Fjalla One", sans-serif;
+  font-size: 2rem;
+}
+
 .Footer {
   background-color: $warmwhite;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 49px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $darkbackground;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border: 1px solid $starkyellow;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: $warmwhite;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: $softyellow;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px $softyellow;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

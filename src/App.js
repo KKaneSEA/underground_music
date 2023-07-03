@@ -26,6 +26,9 @@ function App() {
   const [rotateY, setRotateY] = useState(0);
   const [jumpLeft, setJumpLeft] = useState(0);
   const [jumpRight, setJumpRight] = useState(0);
+  const [soundState, setSoundState] = useState(true);
+  const [playSound, setPlaySound] = useState(false);
+
   const modelUnderground = useGLTF("./models/otherUndergroundMusic.glb");
   const bricksUnderground = useGLTF("./models/bricksUndergroundMusic.glb");
 
@@ -38,15 +41,24 @@ function App() {
   bricksRotateY.rotation.y = rotateY;
   brickRef.rotation = { x: 0, y: 0, z: 0 };
 
-  const [play] = useSound(sound1);
+  const [play, { pause }] = useSound(sound1);
+
+  function toggleSoundState() {
+    setSoundState(!soundState);
+    pause();
+  }
 
   function handleButtonLeft() {
-    play();
+    if (soundState === false) {
+      play();
+    }
     setJumpLeft(jumpLeft + 1);
   }
 
   function handleButtonRight() {
-    play();
+    if (soundState === false) {
+      play();
+    }
     setJumpRight(jumpRight + 1);
   }
 
@@ -197,7 +209,22 @@ function App() {
               </div>
             </div>
           </div>
-          <div className="Details_Links">click an arrow to play</div>
+          <div className="Details_Links">
+            click an arrow to play
+            <div className="Sound">
+              {" "}
+              <p className="Sound_Text">sound {soundState ? "off" : "on"}</p>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  onClick={(e) => {
+                    toggleSoundState();
+                  }}
+                />
+                <span className="slider round"></span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <footer className="Footer"></footer>
