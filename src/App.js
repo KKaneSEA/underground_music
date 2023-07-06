@@ -14,7 +14,12 @@ import {
   CuboidCollider,
 } from "@react-three/rapier";
 import useSound from "use-sound";
-import sound1 from "./sounds/sound1.mp3";
+import sound1 from "./sounds/u1.mp3";
+import sound2 from "./sounds/u2.mp3";
+import sound3 from "./sounds/u3.mp3";
+import sound4 from "./sounds/u4.mp3";
+import sound5 from "./sounds/u5.mp3";
+import sound6 from "./sounds/u6.mp3";
 
 let emptyScene = [];
 
@@ -41,7 +46,13 @@ function App() {
   bricksRotateY.rotation.y = rotateY;
   brickRef.rotation = { x: 0, y: 0, z: 0 };
 
-  const [play, { pause }] = useSound(sound1);
+  const soundArray = [sound1, sound2, sound3, sound4, sound5, sound6];
+
+  function randomItem(items) {
+    return items[Math.floor(Math.random() * items.length)];
+  }
+
+  const [play, { pause }] = useSound(randomItem(soundArray));
 
   function toggleSoundState() {
     setSoundState(!soundState);
@@ -91,7 +102,7 @@ function App() {
     <div
       className="App"
       // onKeyDown={(e) => {
-      //   handleKey(e);
+      //   // handleKey(e);
       //   console.log(e);
       // }}
     >
@@ -107,7 +118,7 @@ function App() {
               position={[90, 70, -20]}
               color={"white"}
               angle={-7}
-              intensity={0.8}
+              intensity={0.5}
             />
 
             <Env />

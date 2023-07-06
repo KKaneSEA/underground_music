@@ -59,27 +59,27 @@ export default function Person(props) {
 
   useEffect(() => {
     personRef.current.setTranslation({
-      x: Math.random() - 2.5,
+      x: Math.random() - 5,
       // y: (Math.random() + 2.5) * 0.9,
-      y: Math.random() * 5,
-      z: 0,
+      y: Math.random() * 3,
+      z: -1,
     });
 
     setTimeout(() => {
-      personRef.current.setTranslation({ x: 0, y: 0, z: 0 });
+      personRef.current.setTranslation({ x: -2, y: 0, z: 0 });
     }, 175);
   }, [props.jumpLeft]);
 
   useEffect(() => {
     personRef.current.setTranslation({
-      x: Math.random() + 2.5,
+      x: Math.random() + 1.5,
       // y: (Math.random() + 2.5) * 0.9,
-      y: Math.random() * 5,
-      z: 0,
+      y: Math.random() * 2,
+      z: -2.8,
     });
 
     setTimeout(() => {
-      personRef.current.setTranslation({ x: 0, y: 0, z: 0 });
+      personRef.current.setTranslation({ x: -1, y: 0, z: 0 });
     }, 175);
   }, [props.jumpRight]);
 
